@@ -5,5 +5,6 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import java.io.IOException;
 
 public interface IRipleyService {
-    void getCellphones(WebClient webClient) throws IOException;
+    void getSmartphones(WebClient webClient) throws IOException;
+    void getToys(WebClient webClient) throws IOException;
 }

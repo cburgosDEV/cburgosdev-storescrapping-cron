@@ -1,6 +1,6 @@
-package cburgosdev.java;
+package cburgosdev.java.DTOs;
 
-public class ProductBean {
+public class ProductDTO {
     String name;
     String price;
     String priceWithCard;

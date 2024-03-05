@@ -5,15 +5,13 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "products_details")
-public class ProductDetail {
+@Table(name = "products_records")
+public class ProductRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private int productId;
     private Double price;
-    private Double priceWithCard;
-    private Double minPrice;
     private Date date;
 
     public int getId() {
@@ -40,22 +38,6 @@ public class ProductDetail {
         this.price = price;
     }
 
-    public Double getPriceWithCard() {
-        return priceWithCard;
-    }
-
-    public void setPriceWithCard(Double priceWithCard) {
-        this.priceWithCard = priceWithCard;
-    }
-
-    public Double getMinPrice() {
-        return minPrice;
-    }
-
-    public void setMinPrice(Double minPrice) {
-        this.minPrice = minPrice;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -66,12 +48,10 @@ public class ProductDetail {
 
     @Override
     public String toString() {
-        return "ProductDetail{" +
+        return "ProductRecord{" +
                 "id=" + id +
                 ", productId=" + productId +
                 ", price=" + price +
-                ", priceWithCard=" + priceWithCard +
-                ", minPrice=" + minPrice +
                 ", date=" + date +
                 '}';
     }

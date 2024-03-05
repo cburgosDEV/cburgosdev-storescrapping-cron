@@ -1,8 +1,0 @@
-DELETE FROM products_details;
-ALTER TABLE products_details AUTO_INCREMENT = 1;
-
-DELETE FROM products;
-ALTER TABLE products AUTO_INCREMENT = 1;
-
-DELETE FROM stores;
-ALTER TABLE stores AUTO_INCREMENT = 1;
