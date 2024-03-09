@@ -18,9 +18,9 @@ public class MainJob {
     @Autowired
     private IProductRecordService productRecordService;
 
-    @Scheduled(cron = "0 */5 * ? * *") //Cada 5 min empezando en minutos multiplos de 5
+    //@Scheduled(cron = "0 */5 * ? * *") //Cada 5 min empezando en minutos multiplos de 5
     //@Scheduled(cron = "20 * * * * *") //Cada 20 segundos
-    //@Scheduled(cron = "0 0 * * * *") //Cada hora
+    @Scheduled(cron = "0 0 * * * *") //Cada hora
     public void initJobProducts() {
         try(WebClient webClient = new WebClient()) {
             webClient.getOptions().setThrowExceptionOnScriptError(false);
@@ -29,6 +29,7 @@ public class MainJob {
 
             ripleyService.getSmartphones(webClient);
             ripleyService.getToys(webClient);
+            ripleyService.getLaptops(webClient);
 
             System.out.println("==============>>>>>>>>>>> PROCESS FINISHED  <<<<<<<<<<<==============");
 

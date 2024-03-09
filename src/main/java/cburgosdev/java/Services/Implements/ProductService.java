@@ -13,6 +13,7 @@ import cburgosdev.java.Utils.CommonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -25,51 +26,57 @@ public class ProductService implements IProductService {
     @Autowired
     private IBrandService brandService;
     @Override
-    public HashMap<String, Integer> saveProductAndDetail(ProductDTO productBean, int storeId, int categoryId) {
+    public HashMap<String, Integer> saveProductAndDetail(ProductDTO productBean, Long storeId, Long categoryId) {
         HashMap<String, Integer> result = new HashMap<>();
         result.put("productResult", 0);
         result.put("productDetailResult", 0);
 
-        Product productFromDB = productRepository.getProductByName(productBean.getName());
-        int brandId = brandService.getBrandId(productBean.getBrand());
-        if(productFromDB == null) {
-            //save product
-            Product productToSave = ProductMapper.beanToModel(productBean, storeId, brandId, categoryId);
-            productRepository.save(productToSave);
+       try {
+           Product productFromDB = productRepository.getProductByName(productBean.getName());
+           if(productFromDB == null) {
+               Long brandId = brandService.getBrandId(productBean.getBrand(), categoryId);
 
-            //save detail
-            ProductDetail productDetailToSave = ProductDetailMapper.beanToModel(productBean, productToSave.getId());
-            productDetailRepository.save(productDetailToSave);
+               //save product
+               Product productToSave = ProductMapper.beanToModel(productBean, storeId, brandId, categoryId);
+               productRepository.save(productToSave);
 
-            result.replace("productResult", 1);
-            result.replace("productDetailResult", 1);
-        } else {
-            //save detail
-            ProductDetail productDetailToSave = ProductDetailMapper.beanToModel(productBean, productFromDB.getId());
-            productDetailRepository.save(productDetailToSave);
+               //save detail
+               ProductDetail productDetailToSave = ProductDetailMapper.beanToModel(productBean, productToSave.getId());
+               productDetailRepository.save(productDetailToSave);
 
-            //update product
-            productFromDB.setDiscountRate(CommonUtils.getDiscountRate(productDetailToSave.getMinPrice(), productFromDB.getDiscountRate(), productFromDB.getLastPriceChanged()));
-            productFromDB.setLastPrice(productDetailToSave.getMinPrice());
+               result.replace("productResult", 1);
+               result.replace("productDetailResult", 1);
+           } else {
+               //save detail
+               ProductDetail productDetailToSave = ProductDetailMapper.beanToModel(productBean, productFromDB.getId());
+               productDetailRepository.save(productDetailToSave);
 
-                //seteamos el lastPriceChanged solo si el precio que viene del scrapping es diferente al lastPriceChanged de la BD
-            if (!Objects.equals(productDetailToSave.getMinPrice(), productFromDB.getLastPriceChanged())) {
-                productFromDB.setLastPriceChanged(productDetailToSave.getMinPrice());
-                productFromDB.setIsHistoricalPrice(false);
-            }
+               //update product
+               productFromDB.setDiscountRate(CommonUtils.getDiscountRate(productDetailToSave.getMinPrice(), productFromDB.getDiscountRate(), productFromDB.getLastPriceChanged()));
+               productFromDB.setLastPrice(productDetailToSave.getMinPrice());
 
-                //seteamos el historicalMinPrice solo si el precio que viene del scrapping es menor al historicalMinPrice de la BD
-            if(productDetailToSave.getMinPrice() < productFromDB.getHistoricalMinPrice()) {
-                productFromDB.setHistoricalMinPrice(productDetailToSave.getMinPrice());
-                productFromDB.setIsHistoricalPrice(true);
-            }
-            
-            productFromDB.setDetailHref(productBean.getDetailHref());
-            productRepository.save(productFromDB);
+               //seteamos el lastPriceChanged solo si el precio que viene del scrapping es diferente al lastPriceChanged de la BD
+               if (!Objects.equals(productDetailToSave.getMinPrice(), productFromDB.getLastPriceChanged())) {
+                   productFromDB.setLastPriceChanged(productDetailToSave.getMinPrice());
+                   productFromDB.setIsHistoricalPrice(false);
+               }
 
-            result.replace("productDetailResult", 1);
-        }
+               //seteamos el historicalMinPrice solo si el precio que viene del scrapping es menor al historicalMinPrice de la BD
+               if(productDetailToSave.getMinPrice() < productFromDB.getHistoricalMinPrice()) {
+                   productFromDB.setHistoricalMinPrice(productDetailToSave.getMinPrice());
+                   productFromDB.setIsHistoricalPrice(true);
+               }
 
-        return result;
+               productFromDB.setDetailHref(productBean.getDetailHref());
+               productFromDB.setModifiedDate(new Date());
+               productRepository.save(productFromDB);
+
+               result.replace("productDetailResult", 1);
+           }
+       } catch (Exception e) {
+           System.out.println("=>>>>>>>>>>> THERE WAS AN ERROR ON PRODUCT  " + productBean.toString());
+       }
+
+       return result;
     }
 }

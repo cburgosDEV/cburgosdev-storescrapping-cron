@@ -5,8 +5,11 @@ import cburgosdev.java.DTOs.ProductDTO;
 import cburgosdev.java.Utils.CommonUtils;
 import cburgosdev.java.Utils.StringUtils;
 
+import java.util.Date;
+
 public class ProductMapper {
-    public static Product beanToModel(ProductDTO productBean, int storeId, int brandId, int categoryId) {
+    public static Product beanToModel(ProductDTO productBean, Long storeId, Long brandId, Long categoryId) {
+        Date today = new Date();
         Double price = productBean.getPrice().isEmpty() ? null : StringUtils.getPriceFromStringRipley(productBean.getPrice());
         Double priceWithCard = productBean.getPriceWithCard().isEmpty() ? null : StringUtils.getPriceFromStringRipley(productBean.getPriceWithCard());
 
@@ -22,6 +25,8 @@ public class ProductMapper {
         product.setStoreId(storeId);
         product.setBrandId(brandId);
         product.setCategoryId(categoryId);
+        product.setCreatedDate(today);
+        product.setModifiedDate(today);
 
         return product;
     }

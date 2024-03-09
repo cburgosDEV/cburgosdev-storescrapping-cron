@@ -8,7 +8,7 @@ import cburgosdev.java.Utils.StringUtils;
 import java.util.Date;
 
 public class ProductDetailMapper {
-    public static ProductDetail beanToModel(ProductDTO productBean, int productId) {
+    public static ProductDetail beanToModel(ProductDTO productBean, Long productId) {
         Double price = productBean.getPrice().isEmpty() ? null : StringUtils.getPriceFromStringRipley(productBean.getPrice());
         Double priceWithCard = productBean.getPriceWithCard().isEmpty() ? null : StringUtils.getPriceFromStringRipley(productBean.getPriceWithCard());
 

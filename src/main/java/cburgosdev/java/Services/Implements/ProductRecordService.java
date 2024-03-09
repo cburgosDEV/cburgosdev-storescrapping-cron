@@ -30,7 +30,7 @@ public class ProductRecordService implements IProductRecordService {
 
             for(Object[] record : records) {
                 ProductRecord productRecord = new ProductRecord();
-                productRecord.setProductId((int) record[0]);
+                productRecord.setProductId((Long) record[0]);
                 productRecord.setPrice((Double) record[1]);
                 productRecord.setDate((Date) record[2]);
                 System.out.println("=>>>>>>>>>>> PRODUCT TO SAVE: " + productRecord);

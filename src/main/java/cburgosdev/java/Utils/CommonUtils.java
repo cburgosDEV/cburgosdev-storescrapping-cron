@@ -8,7 +8,7 @@ public class CommonUtils {
     }
     public static Double getDiscountRate(Double lastPrice, Double discountRateFromDB, Double lastPriceChanged) {
         if(!Objects.equals(lastPrice, lastPriceChanged)) {
-            return ((lastPrice - lastPriceChanged) / lastPrice) * 100;
+            return ((lastPriceChanged - lastPrice) / lastPriceChanged) * 100;
         } else {
             return discountRateFromDB;
         }

@@ -23,7 +23,7 @@ public class RipleyService implements IRipleyService {
     public void getSmartphones(WebClient webClient) {
         System.out.println("==============>>>>>>>>>>> INIT METHOD getSmartphones()  <<<<<<<<<<<==============");
 
-        int pageSize = 3;
+        int pageSize = 5;
 
         for (int i = 1; i <= pageSize; i++) {
             getByPage(i, webClient, RipleyConstants.urlCellphones.replace("{pageNumber}", Integer.toString(i)), CategoryConstants.SMARTPHONES);
@@ -39,9 +39,20 @@ public class RipleyService implements IRipleyService {
             getByPage(i, webClient, RipleyConstants.urlPokemonToys.replace("{pageNumber}", Integer.toString(i)), CategoryConstants.TOYS);
             getByPage(i, webClient, RipleyConstants.urlHotwheelsToys.replace("{pageNumber}", Integer.toString(i)), CategoryConstants.TOYS);
             getByPage(i, webClient, RipleyConstants.urlBandaiToys.replace("{pageNumber}", Integer.toString(i)), CategoryConstants.TOYS);
+            getByPage(i, webClient, RipleyConstants.urlLegoToys.replace("{pageNumber}", Integer.toString(i)), CategoryConstants.TOYS);
         }
     }
-    private void getByPage(int pageNumber, WebClient webClient, String urlCategory, int categoryId) {
+    @Override
+    public void getLaptops(WebClient webClient) {
+        System.out.println("==============>>>>>>>>>>> INIT METHOD getLaptops()  <<<<<<<<<<<==============");
+
+        int pageSize = 4;
+
+        for (int i = 1; i <= pageSize; i++) {
+            getByPage(i, webClient, RipleyConstants.urlLaptops.replace("{pageNumber}", Integer.toString(i)), CategoryConstants.LAPTOPS);
+        }
+    }
+    private void getByPage(int pageNumber, WebClient webClient, String urlCategory, Long categoryId) {
         try {
             HtmlPage page = webClient.getPage(RipleyConstants.baseUrl + urlCategory);
             String pageTitle = page.getTitleText();
@@ -61,7 +72,7 @@ public class RipleyService implements IRipleyService {
             for (DomElement cardHtml : cardHtmlList) {
                 ProductDTO productBean = fillProductAttributes(cardHtml);
                 if(!(productBean == null || productBean.getName().isEmpty())) {
-                    System.out.println("=>>>>>>>>>>> PAGE " + pageNumber + " PRODUCT TO SAVE: " + productBean);
+                    System.out.println("=>>>>>>>>>>> PAGE " + pageNumber + " CATEGORY " + categoryId + " PRODUCT TO SAVE: " + productBean);
 
                     HashMap<String, Integer> saveProductResult = productService.saveProductAndDetail(productBean, StoreConstants.Ripley, categoryId);
                     productQuantity += saveProductResult.get("productResult");

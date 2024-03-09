@@ -12,12 +12,13 @@ public class BrandService implements IBrandService {
     private IBrandRepository brandRepository;
 
     @Override
-    public int getBrandId(String name) {
+    public Long getBrandId(String name, Long categoryId) {
         Brand brand = brandRepository.getBrandByName(name.toUpperCase());
 
         if(brand == null) {
             brand = new Brand();
             brand.setName(name);
+            brand.setCategoryId(categoryId);
             brandRepository.save(brand);
 
             return brand.getId();
