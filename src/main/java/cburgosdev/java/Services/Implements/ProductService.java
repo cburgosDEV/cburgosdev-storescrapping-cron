@@ -32,7 +32,7 @@ public class ProductService implements IProductService {
         result.put("productDetailResult", 0);
 
        try {
-           Product productFromDB = productRepository.getProductByName(productBean.getName());
+           Product productFromDB = productRepository.getProductByName(productBean.getName(), storeId);
            if(productFromDB == null) {
                Long brandId = brandService.getBrandId(productBean.getBrand(), categoryId);
 

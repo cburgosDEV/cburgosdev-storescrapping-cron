@@ -13,7 +13,7 @@ public class ProductDTO {
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = name.trim().toUpperCase();
     }
 
     public String getPrice() {
@@ -21,7 +21,7 @@ public class ProductDTO {
     }
 
     public void setPrice(String price) {
-        this.price = price;
+        this.price = price.trim();
     }
 
     public String getPriceWithCard() {
@@ -29,7 +29,7 @@ public class ProductDTO {
     }
 
     public void setPriceWithCard(String priceWithCard) {
-        this.priceWithCard = priceWithCard;
+        this.priceWithCard = priceWithCard.trim();
     }
 
     public String getBrand() {
@@ -37,7 +37,7 @@ public class ProductDTO {
     }
 
     public void setBrand(String brand) {
-        this.brand = brand;
+        this.brand = brand.trim().toUpperCase();
     }
 
     public String getDetailHref() {
@@ -45,7 +45,7 @@ public class ProductDTO {
     }
 
     public void setDetailHref(String detailHref) {
-        this.detailHref = detailHref;
+        this.detailHref = detailHref.trim();
     }
 
     public String getImgSrc() {
@@ -53,7 +53,7 @@ public class ProductDTO {
     }
 
     public void setImgSrc(String imgSrc) {
-        this.imgSrc = imgSrc;
+        this.imgSrc = imgSrc.trim();
     }
 
     @Override
